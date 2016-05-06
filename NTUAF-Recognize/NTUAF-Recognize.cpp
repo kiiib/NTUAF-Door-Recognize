@@ -12,6 +12,16 @@
 #include <stdlib.h>  //使用exit須載入stdlib標頭檔
 
 using namespace std;
+char showText[1024];
+string strCountNumber;
+cv::Scalar fontcolor = cv::Scalar(0, 0, 235);
+void showCountTime(cv::Mat& rImg, int countNumber) {
+	
+	sprintf_s(showText, "%d", countNumber);
+
+	cv::putText(rImg, showText, cv::Point(1000/2, 700/2), cv::FONT_HERSHEY_PLAIN, 15, fontcolor);
+}
+
 
 void DrawLine(cv::Mat& rImg, const Joint& rJ1, const Joint& rJ2, ICoordinateMapper* pCMapper, string nowTime)
 {
@@ -23,14 +33,14 @@ void DrawLine(cv::Mat& rImg, const Joint& rJ1, const Joint& rJ2, ICoordinateMapp
 	pCMapper->MapCameraPointToColorSpace(rJ2.Position, &ptJ2);
 
 	if (rJ2.JointType == JointType_Head) {
-		cout << "X: " << ptJ1.X << endl;
-		cout << "Y: " << ptJ1.Y << endl;
+		cout << "Head X: " << ptJ2.X << endl;
+		cout << "Head Y: " << ptJ2.Y << endl;
 
 		fstream file;
 
-		char *str[2] = { "X","Y" };  //宣告字串指標陣列
+		char *str[2] = { "Head X","Head Y" };  //宣告字串指標陣列
 
-		float id[2] = { ptJ1.X,ptJ1.Y };
+		float id[2] = { ptJ2.X,ptJ2.Y };
 
 		file.open("data.txt", ios::app);      //開啟檔案
 
@@ -42,6 +52,56 @@ void DrawLine(cv::Mat& rImg, const Joint& rJ1, const Joint& rJ2, ICoordinateMapp
 
 		}
 		file << nowTime << ".jpeg" << "\n";
+		for (int i = 0; i < 2; i++) {
+			file << str[i] << ":" << id[i] << "\n";
+		}      //將資料輸出至檔案
+	}
+
+	if (rJ2.JointType == JointType_ShoulderLeft) {
+		cout << "ShoulderLeft X: " << ptJ2.X << endl;
+		cout << "ShoulderLeft Y: " << ptJ2.Y << endl;
+
+		fstream file;
+
+		char *str[2] = { "ShoulderLeft X","ShoulderLeft Y" };  //宣告字串指標陣列
+
+		float id[2] = { ptJ2.X,ptJ2.Y };
+
+		file.open("data.txt", ios::app);      //開啟檔案
+
+		if (!file)     //檢查檔案是否成功開啟
+
+		{
+			cerr << "Can't open file!\n";
+			exit(1);     //在不正常情形下，中斷程式的執行
+
+		}
+		//file << nowTime << ".jpeg" << "\n";
+		for (int i = 0; i < 2; i++) {
+			file << str[i] << ":" << id[i] << "\n";
+		}      //將資料輸出至檔案
+	}
+
+	if (rJ2.JointType == JointType_ShoulderRight) {
+		cout << "ShoulderRight X: " << ptJ2.X << endl;
+		cout << "ShoulderRight Y: " << ptJ2.Y << endl;
+
+		fstream file;
+
+		char *str[2] = { "ShoulderRight X","ShoulderRight Y" };  //宣告字串指標陣列
+
+		float id[2] = { ptJ2.X,ptJ2.Y };
+
+		file.open("data.txt", ios::app);      //開啟檔案
+
+		if (!file)     //檢查檔案是否成功開啟
+
+		{
+			cerr << "Can't open file!\n";
+			exit(1);     //在不正常情形下，中斷程式的執行
+
+		}
+		//file << nowTime << ".jpeg" << "\n";
 		for (int i = 0; i < 2; i++) {
 			file << str[i] << ":" << id[i] << "\n";
 		}      //將資料輸出至檔案
@@ -224,41 +284,18 @@ int main(int argc, char** argv)
 						Joint aJoints[JointType::JointType_Count];
 						if (pBody->GetJoints(JointType::JointType_Count, aJoints) == S_OK)
 						{
-
-							/*cout << "Left Shoulder Position X: " << aJoints[JointType_ShoulderRight].Position.X << endl;
-							cout << "Wrist Left Position X: " << aJoints[JointType_WristLeft].Position.X << endl;
-							cout << "Left Shoulder Position Y: " << aJoints[JointType_ShoulderRight].Position.Y << endl;
-							cout << "Wrist Left Position Y: " << aJoints[JointType_WristLeft].Position.Y << endl;
-							cout << "Left Shoulder Position Z: " << aJoints[JointType_ShoulderRight].Position.Z << endl;
-							cout << "Wrist Left Position Z: " << aJoints[JointType_WristLeft].Position.Z<< endl;
-							cout << "Left Shoulder Position JointType: " << aJoints[JointType_Head].JointType << endl;
-							cout << "Wrist Left Position JointType: " << aJoints[JointType_WristLeft].JointType << endl;*/
-
-							//float disFromHandLtoHanR = sqrt(pow(aJoints[JointType_HandLeft].Position.X - aJoints[JointType_HandRight].Position.X, 2) + pow(aJoints[JointType_HandLeft].Position.Y - aJoints[JointType_HandRight].Position.Y, 2) + pow(aJoints[JointType_HandLeft].Position.Z - aJoints[JointType_HandRight].Position.Z, 2));
-							//cout << "disFromHandLtoHanR: " << disFromHandLtoHanR << endl;
-
-							//float disFromHeadLtoFoot = sqrt(pow(aJoints[JointType_Head].Position.X - aJoints[JointType_FootRight].Position.X, 2) + pow(aJoints[JointType_Head].Position.Y - aJoints[JointType_FootRight].Position.Y, 2) + pow(aJoints[JointType_Head].Position.Z - aJoints[JointType_FootRight].Position.Z, 2));
-							//cout << "disFromHeadLtoFoot: " << disFromHeadLtoFoot << endl;
-
-							//cout << disFromHeadLtoFoot << endl;
-							/*out << aJoints[JointType_Head].Position.X << "     " << aJoints[JointType_Head].Position.Y;*/
-							//float head_x = aJoints[JointType_Head].Position.X ;
-							//std::string headX = std::to_string(head_x);
-
-							//fwrite(headX, sizeof(char), sizeof(headX), pFile);
-
-
-
-
+							if (countTime < 95) {
+								//show the counting number
+								showCountTime(mImg, countTime);
+							}
 							countTime++;
 
 							cout << "countFrame = " << countTime << endl;
-							if (countTime == 45) {
+							if (countTime == 100) {
 								/*DrawLine(mImg, aJoints[JointType_SpineBase], aJoints[JointType_SpineMid], pCoordinateMapper);
 								DrawLine(mImg, aJoints[JointType_SpineMid], aJoints[JointType_SpineShoulder], pCoordinateMapper);
 								DrawLine(mImg, aJoints[JointType_SpineShoulder], aJoints[JointType_Neck], pCoordinateMapper);*/
 								/*DrawLine(mImg, aJoints[JointType_Neck], aJoints[JointType_Head], pCoordinateMapper);*/
-
 								/*DrawLine(mImg, aJoints[JointType_SpineShoulder], aJoints[JointType_ShoulderLeft], pCoordinateMapper);
 								DrawLine(mImg, aJoints[JointType_ShoulderLeft], aJoints[JointType_ElbowLeft], pCoordinateMapper);
 								DrawLine(mImg, aJoints[JointType_ElbowLeft], aJoints[JointType_WristLeft], pCoordinateMapper);
@@ -283,6 +320,7 @@ int main(int argc, char** argv)
 								DrawLine(mImg, aJoints[JointType_KneeRight], aJoints[JointType_AnkleRight], pCoordinateMapper);
 								DrawLine(mImg, aJoints[JointType_AnkleRight], aJoints[JointType_FootRight], pCoordinateMapper);*/
 
+
 								int newTime;
 								newTime = time(&outTime);
 								picNum++;
@@ -291,10 +329,13 @@ int main(int argc, char** argv)
 
 								sprintf_s(t, "%d", newTime);
 								strPicNum = t;
-								string str = "./images/";
+								string str = "./public/img/";
 								cout << "picpath : " << str << strPicNum << ".jpeg" << endl;
 								try {
 									DrawLine(mImg, aJoints[JointType_Neck], aJoints[JointType_Head], pCoordinateMapper, strPicNum);
+									DrawLine(mImg, aJoints[JointType_SpineShoulder], aJoints[JointType_ShoulderLeft], pCoordinateMapper, strPicNum);
+									DrawLine(mImg, aJoints[JointType_SpineShoulder], aJoints[JointType_ShoulderRight], pCoordinateMapper, strPicNum);
+
 									cv::imwrite(str + strPicNum + ".jpeg", mat, compression_params);
 								}
 								catch (cv::Exception& ex) {

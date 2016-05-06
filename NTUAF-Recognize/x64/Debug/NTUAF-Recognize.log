@@ -1,9 +1,20 @@
-﻿  stdafx.cpp
-  NTUAF-Recognize.cpp
-c:\opencv\build\include\opencv2\core\mat.hpp(1965): warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
-c:\opencv\build\include\opencv2\core\persistence.hpp : warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
-c:\opencv\build\include\opencv2\core\utility.hpp : warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
-c:\opencv\build\include\opencv2\core\utility.hpp : warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
-e:\github\kinect\ntuaf-recognize\ntuaf-recognize\ntuaf-recognize.cpp(50): warning C4244: '引數': 將 'float' 轉換為 'int'，由於類型不同，可能導致資料遺失
-e:\github\kinect\ntuaf-recognize\ntuaf-recognize\ntuaf-recognize.cpp(287): warning C4244: '=': 將 'time_t' 轉換為 'int'，由於類型不同，可能導致資料遺失
-  NTUAF-Recognize.vcxproj -> E:\Github\Kinect\NTUAF-Recognize\x64\Debug\NTUAF-Recognize.exe
+﻿已經開始建置於 2016/5/6 下午 10:07:50。
+     1>節點 2 (Build 目標) 上的專案 "C:\NTUAF-Recognize\NTUAF-Recognize\NTUAF-Recognize.vcxproj"。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files\Microsoft SDKs\Kinect\v2.0_1409\inc" /ZI /nologo /W3 /WX- /sdl /Od /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Yu"stdafx.h" /Fp"x64\Debug\NTUAF-Recognize.pch" /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /Gd /TP /errorReport:prompt "NTUAF-Recognize.cpp"
+         NTUAF-Recognize.cpp
+     1>c:\opencv\build\include\opencv2\core\mat.hpp(1965): warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
+     1>c:\opencv\build\include\opencv2\core\persistence.hpp : warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
+     1>c:\opencv\build\include\opencv2\core\utility.hpp : warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
+     1>c:\opencv\build\include\opencv2\core\utility.hpp : warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
+     1>c:\ntuaf-recognize\ntuaf-recognize\ntuaf-recognize.cpp(110): warning C4244: '引數': 將 'float' 轉換為 'int'，由於類型不同，可能導致資料遺失
+     1>c:\ntuaf-recognize\ntuaf-recognize\ntuaf-recognize.cpp(325): warning C4244: '=': 將 'time_t' 轉換為 'int'，由於類型不同，可能導致資料遺失
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\NTUAF-Recognize\x64\Debug\NTUAF-Recognize.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\opencv\build\x64\vc14\lib /LIBPATH:"C:\Program Files\Microsoft SDKs\Kinect\v2.0_1409\Lib\x64" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kinect20.lib opencv_world310.lib opencv_world310d.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\NTUAF-Recognize\x64\Debug\NTUAF-Recognize.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\NTUAF-Recognize\x64\Debug\NTUAF-Recognize.lib" /MACHINE:X64 "x64\Debug\NTUAF-Recognize.obj"
+         x64\Debug\stdafx.obj
+         NTUAF-Recognize.vcxproj -> C:\NTUAF-Recognize\x64\Debug\NTUAF-Recognize.exe
+     1>專案 "C:\NTUAF-Recognize\NTUAF-Recognize\NTUAF-Recognize.vcxproj" (Build 目標) 建置完成。
+
+建置成功。
+
+經過時間 00:00:01.96
