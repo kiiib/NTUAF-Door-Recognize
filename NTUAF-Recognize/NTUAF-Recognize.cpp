@@ -15,11 +15,12 @@ using namespace std;
 char showText[1024];
 string strCountNumber;
 cv::Scalar fontcolor = cv::Scalar(0, 0, 235);
+cv::Scalar circlecolor = cv::Scalar(0, 235, 0);
 void showCountTime(cv::Mat& rImg, int countNumber) {
-	
+	countNumber = (300 - countNumber) / 30;
 	sprintf_s(showText, "%d", countNumber);
 
-	cv::putText(rImg, showText, cv::Point(1000/2, 700/2), cv::FONT_HERSHEY_PLAIN, 15, fontcolor);
+	cv::putText(rImg, showText, cv::Point(100, 700/2), cv::FONT_HERSHEY_PLAIN, 30, fontcolor, 20);
 }
 
 
@@ -42,7 +43,7 @@ void DrawLine(cv::Mat& rImg, const Joint& rJ1, const Joint& rJ2, ICoordinateMapp
 
 		float id[2] = { ptJ2.X,ptJ2.Y };
 
-		file.open("data.txt", ios::app);      //開啟檔案
+		file.open("data.txt", ios::out);      //開啟檔案
 
 		if (!file)     //檢查檔案是否成功開啟
 
@@ -53,7 +54,8 @@ void DrawLine(cv::Mat& rImg, const Joint& rJ1, const Joint& rJ2, ICoordinateMapp
 		}
 		file << nowTime << ".jpeg" << "\n";
 		for (int i = 0; i < 2; i++) {
-			file << str[i] << ":" << id[i] << "\n";
+			//file << str[i] << ":" << id[i] << "\n";
+			file << id[i] << "\n";
 		}      //將資料輸出至檔案
 	}
 
@@ -78,7 +80,8 @@ void DrawLine(cv::Mat& rImg, const Joint& rJ1, const Joint& rJ2, ICoordinateMapp
 		}
 		//file << nowTime << ".jpeg" << "\n";
 		for (int i = 0; i < 2; i++) {
-			file << str[i] << ":" << id[i] << "\n";
+			//file << str[i] << ":" << id[i] << "\n";
+			file << id[i] << "\n";
 		}      //將資料輸出至檔案
 	}
 
@@ -103,12 +106,13 @@ void DrawLine(cv::Mat& rImg, const Joint& rJ1, const Joint& rJ2, ICoordinateMapp
 		}
 		//file << nowTime << ".jpeg" << "\n";
 		for (int i = 0; i < 2; i++) {
-			file << str[i] << ":" << id[i] << "\n";
+			//file << str[i] << ":" << id[i] << "\n";
+			file << id[i] << "\n";
 		}      //將資料輸出至檔案
 	}
 
-	cv::line(rImg, cv::Point(ptJ1.X, ptJ1.Y), cv::Point(ptJ2.X, ptJ2.Y), cv::Vec3b(10, 230, 30), 5);
-
+	//cv::line(rImg, cv::Point(ptJ1.X, ptJ1.Y), cv::Point(ptJ2.X, ptJ2.Y), cv::Vec3b(10, 230, 30), 5);
+	cv::circle(rImg, cvPoint(ptJ2.X, ptJ2.Y), 200, circlecolor, 30, 8);
 }
 
 int main(int argc, char** argv)
@@ -257,12 +261,8 @@ int main(int argc, char** argv)
 		}
 		cv::Mat mImg = mColorImg.clone();
 
-		//map 
-
-
 		// 4b. Get body data
 		IBodyFrame* pBodyFrame = nullptr;
-		//float distance;
 
 		if (pBodyFrameReader->AcquireLatestFrame(&pBodyFrame) == S_OK)
 		{
@@ -272,8 +272,6 @@ int main(int argc, char** argv)
 				// 4c. for each body
 				for (int i = 0; i < iBodyCount; ++i)
 				{
-
-
 					IBody* pBody = aBodyData[i];
 
 					// check if is tracked
@@ -284,43 +282,14 @@ int main(int argc, char** argv)
 						Joint aJoints[JointType::JointType_Count];
 						if (pBody->GetJoints(JointType::JointType_Count, aJoints) == S_OK)
 						{
-							if (countTime < 95) {
+							if (countTime < 295) {
 								//show the counting number
 								showCountTime(mImg, countTime);
 							}
 							countTime++;
 
 							cout << "countFrame = " << countTime << endl;
-							if (countTime == 100) {
-								/*DrawLine(mImg, aJoints[JointType_SpineBase], aJoints[JointType_SpineMid], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_SpineMid], aJoints[JointType_SpineShoulder], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_SpineShoulder], aJoints[JointType_Neck], pCoordinateMapper);*/
-								/*DrawLine(mImg, aJoints[JointType_Neck], aJoints[JointType_Head], pCoordinateMapper);*/
-								/*DrawLine(mImg, aJoints[JointType_SpineShoulder], aJoints[JointType_ShoulderLeft], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_ShoulderLeft], aJoints[JointType_ElbowLeft], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_ElbowLeft], aJoints[JointType_WristLeft], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_WristLeft], aJoints[JointType_HandLeft], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_HandLeft], aJoints[JointType_HandTipLeft], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_HandLeft], aJoints[JointType_ThumbLeft], pCoordinateMapper);
-
-								DrawLine(mImg, aJoints[JointType_SpineShoulder], aJoints[JointType_ShoulderRight], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_ShoulderRight], aJoints[JointType_ElbowRight], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_ElbowRight], aJoints[JointType_WristRight], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_WristRight], aJoints[JointType_HandRight], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_HandRight], aJoints[JointType_HandTipRight], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_HandRight], aJoints[JointType_ThumbRight], pCoordinateMapper);
-
-								DrawLine(mImg, aJoints[JointType_SpineBase], aJoints[JointType_HipLeft], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_HipLeft], aJoints[JointType_KneeLeft], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_KneeLeft], aJoints[JointType_AnkleLeft], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_AnkleLeft], aJoints[JointType_FootLeft], pCoordinateMapper);
-
-								DrawLine(mImg, aJoints[JointType_SpineBase], aJoints[JointType_HipRight], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_HipRight], aJoints[JointType_KneeRight], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_KneeRight], aJoints[JointType_AnkleRight], pCoordinateMapper);
-								DrawLine(mImg, aJoints[JointType_AnkleRight], aJoints[JointType_FootRight], pCoordinateMapper);*/
-
-
+							if (countTime == 300) {
 								int newTime;
 								newTime = time(&outTime);
 								picNum++;
@@ -333,8 +302,8 @@ int main(int argc, char** argv)
 								cout << "picpath : " << str << strPicNum << ".jpeg" << endl;
 								try {
 									DrawLine(mImg, aJoints[JointType_Neck], aJoints[JointType_Head], pCoordinateMapper, strPicNum);
-									DrawLine(mImg, aJoints[JointType_SpineShoulder], aJoints[JointType_ShoulderLeft], pCoordinateMapper, strPicNum);
-									DrawLine(mImg, aJoints[JointType_SpineShoulder], aJoints[JointType_ShoulderRight], pCoordinateMapper, strPicNum);
+									//DrawLine(mImg, aJoints[JointType_SpineShoulder], aJoints[JointType_ShoulderLeft], pCoordinateMapper, strPicNum);
+									//DrawLine(mImg, aJoints[JointType_SpineShoulder], aJoints[JointType_ShoulderRight], pCoordinateMapper, strPicNum);
 
 									cv::imwrite(str + strPicNum + ".jpeg", mat, compression_params);
 								}
